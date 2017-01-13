@@ -68,7 +68,7 @@ class ActionsAdvancedrights
 			
 			define('INC_FROM_DOLIBARR',true);
 			dol_include_once('/advancedrights/config.php');
-			dol_include_once('/advancedrights/class/advancedrightsdef.php');
+			dol_include_once('/advancedrights/class/advancedrightsdef.class.php');
 			
 			$PDOdb=new TPDOdb;
 			

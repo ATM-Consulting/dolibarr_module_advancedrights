@@ -26,7 +26,7 @@
 
 require '../config.php';
 
-dol_include_once('/advancedrights/class/advancedrightsdef.php');
+dol_include_once('/advancedrights/class/advancedrightsdef.class.php');
 
 // Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
@@ -55,17 +55,17 @@ if($action == 'save') {
 		foreach($_REQUEST['TAdvancedRightDef'] as $id_rem => &$rem) {
 			// var_dump($rem);
 			
-			$r=new TAdvancedRightDef;
-			$r->load($PDOdb, $id_rem);
-			$r->set_values($rem);
+			$o=new TAdvancedRightDef;
+			$o->load($PDOdb, $id_rem);
+			$o->set_values($rem);
 			 
-			$fk_societe=GETPOST('TAdvancedRightDef_'.$r->getId().'_fk_soc');
-			$r->fk_societe = $fk_societe > 0 ? $fk_societe : 0 ;
-
-			$fk_user = GETPOST('TAdvancedRightDef_'.$r->getId().'_fk_user');
-			$r->fk_user = $fk_user > 0 ? $fk_user : 0 ;
+			$groups=GETPOST('TAdvancedRightDef_'.$o->getId().'_fk_usergroup');
+			$o->groups = implode('|',$groups) ;
+			
+			$users = GETPOST('TAdvancedRightDef_'.$o->getId().'_fk_user');
+			$o->users = implode('|',$users) ;;
 			 
-			$r->save($PDOdb);
+			$o->save($PDOdb);
 		}
 		 
 		 
@@ -74,13 +74,13 @@ if($action == 'save') {
 	 
 }
 else if($action == 'delete'){
-	$r=new TAdvancedRightDef;
-	$r->load($PDOdb, GETPOST('id'));
-	$r->delete($PDOdb);
+	$o=new TAdvancedRightDef;
+	$o->load($PDOdb, GETPOST('id'));
+	$o->delete($PDOdb);
 }
 else if($action == 'add'){
-	$r=new TAdvancedRightDef;
-	$r->save($PDOdb);
+	$o=new TAdvancedRightDef;
+	$o->save($PDOdb);
 	 
 }
 
@@ -117,7 +117,7 @@ $var=false;
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
-print '<td>'.$langs->trans("hookname").'</td>'."\n";
+print '<td>'.$langs->trans("ObjectType").'</td>'."\n";
 print '<td>'.$langs->trans("GroupOrUser").'</td>'."\n";
 
 print '<td>'.$langs->trans("Condition").'</td>'."\n";
@@ -126,57 +126,40 @@ print '<td>'.$langs->trans("Rights").'</td>'."\n";
 print '</tr>';
 
 
+	$TGroup = TAdvancedRightDef::getGroup($PDOdb);
+	$TUser = TAdvancedRightDef::getUser($PDOdb);
+	
+	$TGroupSelected = $TUserSelected = array();
+	
     $TAdvancedRightDef = TAdvancedRightDef::getAll($PDOdb);
 
-    foreach($TAdvancedRightDef as &$r) {
+    foreach($TAdvancedRightDef as &$o) {
     	// Gestion affichage type
 		
         $class = ($class == 'impair') ? 'pair' : 'impair';
         
+        $TGroupSelected = explode('|',$o->groups);
+        $TUserSelected = explode('|',$o->users);
+        
         ?>
-        <tr class="<?php echo $class  ?>" id="row_<?php echo $r->getId(); ?>">
+        <tr class="<?php echo $class  ?>" id="row_<?php echo $o->getId(); ?>">
             <td valign="top">
-            	Type<br/>
-            	<?php echo $formCore->combo('', 'TAdvancedRightDef['.$r->getId().'][type]', $r->TType, $r->type); ?><br /><br/>
-            	Trigger<br/>
-            	<?php echo $formCore->texte('','TAdvancedRightDef['.$r->getId().'][trigger_code]' , $r->trigger_code, 25,50, '', 'trigger_code');
-                echo '<div class="nbday" style="'.$cssNBDAY.'"><br/>';
-                echo $langs->trans('NbDayAfter').'<br/>'.$formCore->texte('','TAdvancedRightDef['.$r->getId().'][nb_day_after]' , $r->nb_day_after, 3,5);
-				echo '</div>';
-            ?></td>
+            	<?php echo $formCore->texte('', 'TAdvancedRightDef['.$o->getId().'][object_type]', $o->object_type, 50,255, '', 'object_type'); ?>
+            	
+            </td>
             <td valign="top">
-            	Société (facultatif)<br/>
-            	<?php echo $form->select_thirdparty_list($r->fk_societe,'TAdvancedRightDef_'.$r->getId().'_fk_soc', '', 1); ?><br /><br/>
+            	Groupes (facultatif)<br/>
+            	<?php echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_fk_usergroup', $TGroup, $TGroupSelected,0,0,'minwidth100') ?>
+				<br />            	
             	Utilisateur (facultatif)<br/>
-                <?php echo $form->select_dolusers( (empty($r->fk_user) ? -1 : $r->fk_user)  ,'TAdvancedRightDef_'.$r->getId().'_fk_user' ,1); ?><script type="text/javascript">
-                 
-                </script></td>
-            <td valign="top"><?php 
-                echo '<div class="type" style="'.$cssTYPE.'">';
-                echo 'Type alert<br/>'.$formCore->combo('', 'TAdvancedRightDef['.$r->getId().'][type_msg]', $r->TTypeMessage, $r->type_msg);
-				echo '</div>';
-                echo '<div class="titre" style="'.$cssTITRE.'">';
-                echo 'Titre<br/>'.$formCore->texte('','TAdvancedRightDef['.$r->getId().'][titre]' , $r->titre, 25,50);
-				echo '</div>';
-				echo '<div class="message" style="'.$cssMESSAGE.'">';
-                echo 'Message<br/>'.$formCore->zonetexte('','TAdvancedRightDef['.$r->getId().'][message]' , $r->message, 50,5);
-				echo '<p>
-				Codes utilisables :<br/>
-				[societe_nom]
-				[societe_code_client]
-				[ref]
-				[ref_client]
-				[date]
-				</p>';
-				echo '</div>';
+                <?php echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_fk_user', $TUser, $TUserSelected,0,0,'minwidth100') ?>
+           </td>
+           <td valign="center"><?php 
+           echo $formCore->zonetexte($langs->trans('CodeToEval').'<br />','TAdvancedRightDef['.$o->getId().'][code_eval]' , $o->code_eval, 50,2);
+           echo $formCore->zonetexte($langs->trans('RightsToRemove').'<br />','TAdvancedRightDef['.$o->getId().'][rightstoavoid]' , $o->rightstoavoid, 50,2);
             ?></td>
             
-            <td valign="center"><?php 
-                    echo $formCore->zonetexte($langs->trans('CodeToEvalBefore').'<br />','TAdvancedRightDef['.$r->getId().'][message_condition]' , $r->message_condition, 50,2); 
-                    echo '<br />'.$formCore->zonetexte($langs->trans('CodeToEvalAfter').'<br />','TAdvancedRightDef['.$r->getId().'][message_code]' , $r->message_code, 50,2);   
-             ?></td>
-            
-            <td valign="bottom"><?php echo '<a href="?action=delete&id='.$r->getId().'">'.img_delete().'</a>';  ?></td>
+            <td valign="bottom"><?php echo '<a href="?action=delete&id='.$o->getId().'">'.img_delete().'</a>';  ?></td>
         </tr>
         
         <?php
