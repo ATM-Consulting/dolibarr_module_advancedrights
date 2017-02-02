@@ -2,21 +2,22 @@
 
 class TAdvancedRightDef extends TObjetStd {
 	
-	static $table = MAIN_DB_PREFIX.'advanced_right_def';
+	static public $table = MAIN_DB_PREFIX.'advanced_right_def';
 	
 	function __construct() {
 		$this->set_table(self::$table);
 		 
 		$this->add_champs('entity',array('type'=>'integer','index'=>true));
 		$this->add_champs('groups,users,object_type',array('type'=>'string'));
-		$this->add_champs('code_eval,rightstoavoid',array('type'=>'text'));
-	
+		$this->add_champs('code_eval',array('type'=>'text'));
+		$this->add_champs('rightstoavoid',array('type'=>'array'));
+		
 		$this->_init_vars();
 	
 		$this->start();
 	}
 	
-	function getStdClass() {
+	public function getStdClass() {
 		
 		$r=new stdClass;
 		
@@ -31,7 +32,7 @@ class TAdvancedRightDef extends TObjetStd {
 		
 	}
 	
-	function save(&$PDOdb) {
+	public function save(&$PDOdb) {
 		global $conf;
 		
 		$this->entity = $conf->entity;
@@ -39,7 +40,7 @@ class TAdvancedRightDef extends TObjetStd {
 		parent::save($PDOdb);
 	}
 
-	static function getGroupForUser(&$user) {
+	static public function getGroupForUser(&$user) {
 		global $db;
 		
 		dol_include_once('/user/class/usergroup.class.php');
@@ -61,7 +62,7 @@ class TAdvancedRightDef extends TObjetStd {
 		
 		$TRules = self::fetchAllForObject($PDOdb,$object);
 		if(!empty($TRules)) {
-		
+		//var_dump($TRules);
 			$TGroupOfUser = self::getGroupForUser($user);
 			
 			foreach($TRules as &$rightdef) {
@@ -69,17 +70,25 @@ class TAdvancedRightDef extends TObjetStd {
 				$TGroupOk = explode('|', $rightdef->groups);
 				$TUserOk =  explode('|', $rightdef->users);
 				
-				$unset = true;
+				$unset = false;
 				if(!empty($rightdef->code_eval) && 
 						(in_array($user->id, $TUserOk) || !empty(array_intersect($TGroupOk, $TGroupOfUser)))
 				) {
+					$eval = $rightdef->code_eval;
+					
 					if(strpos($eval,'return ')===false)$eval = 'return ('.$eval.');';
-					if(eval($eval)) {
-						$unset = false;
+					$ret = eval($eval);
+					
+					if($ret) {
+						$unset = true;
 					}
 				}
-				var_dump($unset);
-				if($unset) eval('unset($user->rights->'.$rightdef->rightstoavoid.')');
+				
+				if($unset) {
+					foreach($rightdef->rightstoavoid as $r) {
+						eval('unset($user->rights->'.$r.');');
+					}
+				}
 					
 				
 				
@@ -89,7 +98,49 @@ class TAdvancedRightDef extends TObjetStd {
 		
 	}
 
-	static function getGroup(&$PDOdb) {
+	static public function getAllRights() {
+		global $conf, $db,$user, $langs;
+		
+		$permsuser = array();
+		
+		$sql = "SELECT r.module, r.perms, r.subperms,r.libelle";
+		$sql.= " FROM ".MAIN_DB_PREFIX."rights_def as r";
+		$sql.= " WHERE 1";
+		$sql.= " AND r.entity IN (0,".(! empty($conf->multicompany->enabled) && ! empty($conf->multicompany->transverse_mode)?"1,":"").$conf->entity.")";
+		$sql.= " AND r.perms IS NOT NULL";
+		
+		dol_syslog(get_class($this).'::getrights', LOG_DEBUG);
+		$resql = $db->query($sql);
+		if ($resql)
+		{
+			while ($obj = $db->fetch_object($resql))
+			{
+				$module=$obj->module;
+				$perms=$obj->perms;
+				$subperms=$obj->subperms;
+		
+				
+				if ($perms)
+				{
+					if ($subperms)
+					{
+						$permsuser[$module.'->'.$perms.'->'.$subperms] = ucfirst($langs->trans($module)).' : '. $langs->trans($obj->libelle);
+					}
+					else
+					{
+						$permsuser[$module.'->'.$perms] = ucfirst($langs->trans($module)).' : '.$langs->trans($obj->libelle);
+					}
+		
+				}
+				
+			}
+			
+		}
+		
+		return $permsuser;
+	}
+	
+	static public function getGroup(&$PDOdb) {
 		$TGroup=array();
 		$Tab = $PDOdb->ExecuteAsArray("SELECT rowid, nom
 			FROM ".MAIN_DB_PREFIX."usergroup
@@ -102,7 +153,7 @@ class TAdvancedRightDef extends TObjetStd {
 	}
 	
 
-	static function getUser(&$PDOdb) {
+	static public function getUser(&$PDOdb) {
 		$TUser=array();
 		$Tab = $PDOdb->ExecuteAsArray("SELECT rowid, login
 			FROM ".MAIN_DB_PREFIX."user
@@ -114,7 +165,7 @@ class TAdvancedRightDef extends TObjetStd {
 		return $TUser;
 	}
 	
-	static function fetchAllForObject(&$PDOdb, &$object) {
+	static public function fetchAllForObject(&$PDOdb, &$object) {
 		global $TCacheObject;
 		
 		$TRes = array();
@@ -150,7 +201,7 @@ class TAdvancedRightDef extends TObjetStd {
 	}
 	
 
-	static function getAll(&$PDOdb) {
+	static public function getAll(&$PDOdb) {
 	
 		$sql = "SELECT rowid FROM ".self::$table." WHERE 1 ";
 		$sql.=" ORDER BY date_cre ";

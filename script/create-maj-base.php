@@ -10,7 +10,7 @@ if(!defined('INC_FROM_DOLIBARR')) {
 
 }
 
-dol_include_once('/advancedrights/class/advancedrightsdef.php');
+dol_include_once('/advancedrights/class/advancedrightsdef.class.php');
 
 $PDOdb=new TPDOdb;
 

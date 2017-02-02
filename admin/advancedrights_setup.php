@@ -53,7 +53,6 @@ if($action == 'save') {
 	if(!empty($_REQUEST['TAdvancedRightDef'])) {
 		 
 		foreach($_REQUEST['TAdvancedRightDef'] as $id_rem => &$rem) {
-			// var_dump($rem);
 			
 			$o=new TAdvancedRightDef;
 			$o->load($PDOdb, $id_rem);
@@ -65,6 +64,8 @@ if($action == 'save') {
 			$users = GETPOST('TAdvancedRightDef_'.$o->getId().'_fk_user');
 			$o->users = implode('|',$users) ;;
 			 
+			$o->rightstoavoid = GETPOST('TAdvancedRightDef_'.$o->getId().'_rightstoavoid');
+			
 			$o->save($PDOdb);
 		}
 		 
@@ -133,6 +134,9 @@ print '</tr>';
 	
     $TAdvancedRightDef = TAdvancedRightDef::getAll($PDOdb);
 
+    $TRights = TAdvancedRightDef::getAllRights();
+    
+    
     foreach($TAdvancedRightDef as &$o) {
     	// Gestion affichage type
 		
@@ -140,6 +144,8 @@ print '</tr>';
         
         $TGroupSelected = explode('|',$o->groups);
         $TUserSelected = explode('|',$o->users);
+        
+        $TRightsSelected = $o->rightstoavoid;
         
         ?>
         <tr class="<?php echo $class  ?>" id="row_<?php echo $o->getId(); ?>">
@@ -156,7 +162,11 @@ print '</tr>';
            </td>
            <td valign="center"><?php 
            echo $formCore->zonetexte($langs->trans('CodeToEval').'<br />','TAdvancedRightDef['.$o->getId().'][code_eval]' , $o->code_eval, 50,2);
-           echo $formCore->zonetexte($langs->trans('RightsToRemove').'<br />','TAdvancedRightDef['.$o->getId().'][rightstoavoid]' , $o->rightstoavoid, 50,2);
+           echo '<hr />';
+           echo $langs->trans('RightsToRemove').'<br />';
+           echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_rightstoavoid' , $TRights, $TRightsSelected,0,0,'minwidth300' );
+           
+          // echo $formCore->zonetexte($langs->trans('RightsToRemove').'<br />','TAdvancedRightDef['.$o->getId().'][rightstoavoid]' , $o->rightstoavoid, 50,2);
             ?></td>
             
             <td valign="bottom"><?php echo '<a href="?action=delete&id='.$o->getId().'">'.img_delete().'</a>';  ?></td>
