@@ -5,3 +5,11 @@ ATMAbout = Ce module a été développé par <a href="http://www.atm-consulting.
 
 AdvancedrightsSetup = Configuration du module Advancedrights
 AdvancedrightsAbout = A propos du module Advancedrights
+
+ObjectType = Class de l'objet
+GroupOrUser = Utilisateur ou Groupe
+Condition = Condition
+Rights = Droits
+CodeToEval = Condition à valider (PHP)
+RightsToRemove = Droit à supprimer si la condition est valide
+RightsToAdd = Droit à ajouter si la condition est valide

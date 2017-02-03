@@ -59,10 +59,18 @@ if($action == 'save') {
 			$o->set_values($rem);
 			 
 			$groups=GETPOST('TAdvancedRightDef_'.$o->getId().'_fk_usergroup');
-			$o->groups = implode('|',$groups) ;
+			if(!empty($groups)){
+				$o->groups = implode('|',$groups) ;
+			} else {
+				$o->groups = null;
+			}
 			
 			$users = GETPOST('TAdvancedRightDef_'.$o->getId().'_fk_user');
-			$o->users = implode('|',$users) ;;
+			if(!empty($users)){
+				$o->users = implode('|',$users) ;;
+			}else{
+				$o->users = null;
+			}
 			 
 			$o->rightstoavoid = GETPOST('TAdvancedRightDef_'.$o->getId().'_rightstoavoid');
 			
