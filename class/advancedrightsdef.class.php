@@ -1,11 +1,9 @@
 <?php
 
 class TAdvancedRightDef extends TObjetStd {
-	
-	static public $table = MAIN_DB_PREFIX.'advanced_right_def';
-	
+		
 	function __construct() {
-		$this->set_table(self::$table);
+		$this->set_table(MAIN_DB_PREFIX.'advanced_right_def');
 		 
 		$this->add_champs('entity',array('type'=>'integer','index'=>true));
 		$this->add_champs('groups,users,object_type',array('type'=>'string'));
@@ -180,7 +178,7 @@ class TAdvancedRightDef extends TObjetStd {
 			if(empty($_SESSION['CacheARD']))$_SESSION['CacheARD']=array();
 			if(!empty($_SESSION['CacheARD'][$type_object])) return $_SESSION['CacheARD'][$type_object];
 			
-			$sql = "SELECT rowid FROM ".self::$table;
+			$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX.'advanced_right_def';
 			$sql.= " WHERE object_type LIKE '%".$type_object."%'";
 			$sql.= " ORDER BY date_cre ASC";
 			
@@ -203,7 +201,7 @@ class TAdvancedRightDef extends TObjetStd {
 
 	static public function getAll(&$PDOdb) {
 	
-		$sql = "SELECT rowid FROM ".self::$table." WHERE 1 ";
+		$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX.'advanced_right_def'." WHERE 1 ";
 		$sql.=" ORDER BY date_cre ";
 	
 		$Tab = $PDOdb->ExecuteAsArray($sql);
