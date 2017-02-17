@@ -69,8 +69,9 @@ class TAdvancedRightDef extends TObjetStd {
 				$TUserOk =  explode('|', $rightdef->users);
 				
 				$unset = false;
+				$intersect_test = array_intersect($TGroupOk, $TGroupOfUser);
 				if(!empty($rightdef->code_eval) && 
-						(in_array($user->id, $TUserOk) || !empty(array_intersect($TGroupOk, $TGroupOfUser)))
+						(in_array($user->id, $TUserOk) || !empty($intersect_test))
 				) {
 					$eval = $rightdef->code_eval;
 					
