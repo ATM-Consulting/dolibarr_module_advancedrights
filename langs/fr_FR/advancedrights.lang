@@ -7,9 +7,12 @@ AdvancedrightsSetup = Configuration du module Advancedrights
 AdvancedrightsAbout = A propos du module Advancedrights
 
 ObjectType = Class de l'objet
+ObjectTypeHelp=Valeur de l'attribut "element" de l'objet<br /><b>Exemple de Class :</b><br /><ul><li>Facture::element = facture</li><li>OrderLine::element = commandedet</li></ul>
 GroupOrUser = Utilisateur ou Groupe
+GroupOrUserHelp=<b>Attention</b> il est <b>nécessaire</b> de renseigner au moins l'un des 2 champs
 Condition = Condition
 Rights = Droits
 CodeToEval = Condition à valider (PHP)
 RightsToRemove = Droit à supprimer si la condition est valide
+RightsToRemoveHelp=Attention, certains intitulés peuvent différer avec ce qui est noté dans l'onglet "Permissions utilisateur"
 RightsToAdd = Droit à ajouter si la condition est valide

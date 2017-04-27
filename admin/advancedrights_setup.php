@@ -126,11 +126,11 @@ $var=false;
 
 print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
-print '<td>'.$langs->trans("ObjectType").'</td>'."\n";
-print '<td>'.$langs->trans("GroupOrUser").'</td>'."\n";
+print '<td>'.$form->textwithpicto($langs->trans('ObjectType'), $langs->trans('ObjectTypeHelp')).'</td>'."\n";
+print '<td>'.$form->textwithpicto($langs->trans('GroupOrUser'), $langs->trans('GroupOrUserHelp')).'</td>'."\n";
 
-print '<td>'.$langs->trans("Condition").'</td>'."\n";
-print '<td>'.$langs->trans("Rights").'</td>'."\n";
+print '<td>'.$langs->trans("Condition").' / '.$langs->trans("Rights").'</td>'."\n";
+print '<td></td>'."\n";
 
 print '</tr>';
 
@@ -171,7 +171,7 @@ print '</tr>';
            <td valign="center"><?php 
            echo $formCore->zonetexte($langs->trans('CodeToEval').'<br />','TAdvancedRightDef['.$o->getId().'][code_eval]' , $o->code_eval, 50,2);
            echo '<hr />';
-           echo $langs->trans('RightsToRemove').'<br />';
+           echo $form->textwithpicto($langs->trans('RightsToRemove'), $langs->trans('RightsToRemoveHelp')).'<br />';
            echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_rightstoavoid' , $TRights, $TRightsSelected,0,0,'minwidth300' );
            
           // echo $formCore->zonetexte($langs->trans('RightsToRemove').'<br />','TAdvancedRightDef['.$o->getId().'][rightstoavoid]' , $o->rightstoavoid, 50,2);
