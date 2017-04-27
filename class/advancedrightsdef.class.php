@@ -57,7 +57,7 @@ class TAdvancedRightDef extends TObjetStd {
 	 * unset $user->rights->... if not respect the condition eval
 	 */
 	static function run(&$PDOdb,&$object,User &$user) {
-		
+		global $conf;
 		$TRules = self::fetchAllForObject($PDOdb,$object);
 		if(!empty($TRules)) {
 		//var_dump($TRules);
