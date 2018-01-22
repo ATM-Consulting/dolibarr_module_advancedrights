@@ -6,7 +6,7 @@ class TAdvancedRightDef extends TObjetStd {
 		$this->set_table(MAIN_DB_PREFIX.'advanced_right_def');
 		 
 		$this->add_champs('entity',array('type'=>'integer','index'=>true));
-		$this->add_champs('groups,users,object_type',array('type'=>'string'));
+		$this->add_champs('groups,users,object_type,action',array('type'=>'string'));
 		$this->add_champs('code_eval',array('type'=>'text'));
 		$this->add_champs('rightstoavoid',array('type'=>'array'));
 		
@@ -25,6 +25,7 @@ class TAdvancedRightDef extends TObjetStd {
 		$r->object_type = $this->object_type;
 		$r->code_eval = $this->code_eval;
 		$r->rightstoavoid = $this->rightstoavoid;
+		$r->action = $this->action;
 		
 		return $r;
 		
@@ -56,7 +57,7 @@ class TAdvancedRightDef extends TObjetStd {
 	/*
 	 * unset $user->rights->... if not respect the condition eval
 	 */
-	static function run(&$PDOdb,&$object,User &$user) {
+	static function run(&$PDOdb,&$object,User &$user,$action = null ) {
 		global $conf;
 		$TRules = self::fetchAllForObject($PDOdb,$object);
 		if(!empty($TRules)) {
@@ -70,8 +71,10 @@ class TAdvancedRightDef extends TObjetStd {
 				
 				$unset = false;
 				$intersect_test = array_intersect($TGroupOk, $TGroupOfUser);
+				
 				if(!empty($rightdef->code_eval) && 
-						(in_array($user->id, $TUserOk) || !empty($intersect_test))
+						(in_array($user->id, $TUserOk) || !empty($intersect_test)) &&
+					(!empty($action) && !empty($rightdef->action) && $action==$rightdef->action)
 				) {
 					$eval = $rightdef->code_eval;
 					
@@ -168,6 +171,7 @@ class TAdvancedRightDef extends TObjetStd {
 		global $TCacheObject;
 		
 		$TRes = array();
+		
 		if(isset($object))
 		{
 			
@@ -185,12 +189,13 @@ class TAdvancedRightDef extends TObjetStd {
 			
 			$Tab = $PDOdb->ExecuteAsArray($sql);
 			$TRes=array();
+			
 			foreach($Tab as $row) {
 				$r=new TAdvancedRightDef;
 				$r->load($PDOdb, $row->rowid);
 				
 				$TRes[] = $r->getStdClass();
-				 
+				
 			}
 			
 			$_SESSION['CacheARD'][$type_object] = $TRes;

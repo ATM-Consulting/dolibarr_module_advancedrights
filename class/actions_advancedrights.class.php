@@ -72,7 +72,7 @@ class ActionsAdvancedrights
 			
 			$PDOdb=new TPDOdb;
 			
-			TAdvancedRightDef::run($PDOdb, $object, $user);
+			TAdvancedRightDef::run($PDOdb, $object, $user, $action);
 			
 			
 		}

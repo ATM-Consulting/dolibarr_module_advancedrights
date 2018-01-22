@@ -166,7 +166,9 @@ print '</tr>';
             	<?php echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_fk_usergroup', $TGroup, $TGroupSelected,0,0,'minwidth100') ?>
 				<br />            	
             	Utilisateur (facultatif)<br/>
-                <?php echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_fk_user', $TUser, $TUserSelected,0,0,'minwidth100') ?>
+                <?php echo $form->multiselectarray('TAdvancedRightDef_'.$o->getId().'_fk_user', $TUser, $TUserSelected,0,0,'minwidth100');
+				echo '</br>';
+				echo $formCore->texte('Action (facultatif)<br />','TAdvancedRightDef['.$o->getId().'][action]' , $o->action, 50,255,'','object_type');?>
            </td>
            <td valign="center"><?php 
            echo $formCore->zonetexte($langs->trans('CodeToEval').'<br />','TAdvancedRightDef['.$o->getId().'][code_eval]' , $o->code_eval, 50,2);
