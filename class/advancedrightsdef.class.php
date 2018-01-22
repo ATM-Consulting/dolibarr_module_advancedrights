@@ -74,7 +74,7 @@ class TAdvancedRightDef extends TObjetStd {
 				
 				if(!empty($rightdef->code_eval) && 
 						(in_array($user->id, $TUserOk) || !empty($intersect_test)) &&
-					(!empty($action) && !empty($rightdef->action) && $action==$rightdef->action)
+					($action==$rightdef->action)
 				) {
 					$eval = $rightdef->code_eval;
 					
