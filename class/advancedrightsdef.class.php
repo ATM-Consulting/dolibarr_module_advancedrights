@@ -206,8 +206,8 @@ class TAdvancedRightDef extends TObjetStd {
 
 
 	static public function getAll(&$PDOdb) {
-
-		$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX.'advanced_right_def'." WHERE 1 ";
+		global $conf;
+		$sql = "SELECT rowid FROM ".MAIN_DB_PREFIX.'advanced_right_def'." WHERE entity=".$conf->entity;
 		$sql.=" ORDER BY date_cre ";
 
 		$Tab = $PDOdb->ExecuteAsArray($sql);
