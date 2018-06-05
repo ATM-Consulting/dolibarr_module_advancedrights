@@ -65,16 +65,16 @@ class ActionsAdvancedrights
 		{
 
 			global $user;
-			
+
 			define('INC_FROM_DOLIBARR',true);
 			dol_include_once('/advancedrights/config.php');
 			dol_include_once('/advancedrights/class/advancedrightsdef.class.php');
-			
+
 			$PDOdb=new TPDOdb;
-			
-			TAdvancedRightDef::run($PDOdb, $object, $user, $action);
-			
-			
+
+			TAdvancedRightDef::run($PDOdb, $object, $user, $action, $parameters);
+
+
 		}
 	}
 }
