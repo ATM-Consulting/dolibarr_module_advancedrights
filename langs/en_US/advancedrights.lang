@@ -1,7 +1,23 @@
+# langs en_US
 Module104038Name = Advancedrights
 Module104038Desc = Advancedrights Description
 
-ATMAbout = This module has been developed by <a href="http://www.atm-consulting.fr" target="_blank">ATM Consulting</a><br>You can find the documentation on our <a href="http://wiki.atm-consulting.fr/index.php/Accueil" target="_blank">wiki</a><br><br>For any question or feedback, contact us on <a href="mailto:support@atm-consulting.fr">support@atm-consulting.fr</a><br><br>For any commercial question, contact us on <a href="mailto:contact@atm-consulting.fr">contact@atm-consulting.fr</a> or at +33 9 77 19 50 70<br><br>Find our other modules on <a href="http://www.dolistore.com/search.php?orderby=position&orderway=desc&search_query=atm&submit_search=Rechercher" target="_blank">Dolistore</a>
+ATMAbout = This module has been developed by <a href="https://www.atm-consulting.fr" target="_blank">ATM Consulting</a><br>You can find the documentation on our <a href="http://wiki.atm-consulting.fr/index.php/Accueil" target="_blank">wiki</a><br><br>For any question or feedback, contact us on <a href="mailto:support@atm-consulting.fr">support@atm-consulting.fr</a><br><br>For any commercial question, contact us on <a href="mailto:contact@atm-consulting.fr">contact@atm-consulting.fr</a> or at +33 9 77 19 50 70<br><br>Find our other modules on <a href="http://www.dolistore.com/search.php?orderby=position&orderway=desc&search_query=atm&submit_search=Rechercher" target="_blank">Dolistore</a>
 
 AdvancedrightsSetup = Advancedrights module setup
 AdvancedrightsAbout = About Advancedrights
+
+
+ObjectType = object class
+ObjectTypeHelp = Value of the "element" attribute of the object <br /> <b>Example of a Class:</b> <br /> <ul> <li> Invoice :: element = invoice </li> <li> OrderLine :: element = commandedet </li> </ul>
+
+GroupOrUser = User or Group
+GroupOrUserHelp = <b>Attention</b> it is <b>necessary</b> to fill in at least one of the 2 fields.
+
+Condition = Condition
+Rights = Rights
+CodeToEval = Condition to be validated (PHP)
+
+RightsToRemove = Right to delete if condition is valid
+RightsToRemoveHelp = Please note that some titles may differ from what is noted in the "user permissions" tab.
+RightsToAdd = Right to add if the condition is valid

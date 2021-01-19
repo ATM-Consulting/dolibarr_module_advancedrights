@@ -1,18 +1,19 @@
+# langs fr_FR
 Module104038Name = Advancedrights
 Module104038Desc = Advancedrights Description
 
-ATMAbout = Ce module a été développé par <a href="http://www.atm-consulting.fr" target="_blank">ATM Consulting</a><br>Vous pouvez retrouver la documentation sur notre <a href="http://wiki.atm-consulting.fr/index.php/Accueil" target="_blank">wiki</a><br><br>Pour toute question technique ou retour, contactez-nous sur <a href="mailto:support@atm-consulting.fr">support@atm-consulting.fr</a><br><br>Pour toute question commerciale, contactez-nous sur <a href="mailto:contact@atm-consulting.fr">contact@atm-consulting.fr</a> ou au +33 9 77 19 50 70<br><br>Retrouvez nos autres modules sur <a href="http://www.dolistore.com/search.php?orderby=position&orderway=desc&search_query=atm&submit_search=Rechercher" target="_blank">Dolistore</a>
+ATMAbout = Ce module a été développé par <a href="https://www.atm-consulting.fr" target="_blank">ATM Consulting</a><br>Vous pouvez retrouver la documentation sur notre <a href="http://wiki.atm-consulting.fr/index.php/Accueil" target="_blank">wiki</a><br><br>Pour toute question technique ou retour, contactez-nous sur <a href="mailto:support@atm-consulting.fr">support@atm-consulting.fr</a><br><br>Pour toute question commerciale, contactez-nous sur <a href="mailto:contact@atm-consulting.fr">contact@atm-consulting.fr</a> ou au +33 9 77 19 50 70<br><br>Retrouvez nos autres modules sur <a href="http://www.dolistore.com/search.php?orderby=position&orderway=desc&search_query=atm&submit_search=Rechercher" target="_blank">Dolistore</a>
 
 AdvancedrightsSetup = Configuration du module Advancedrights
 AdvancedrightsAbout = A propos du module Advancedrights
 
 ObjectType = Class de l'objet
-ObjectTypeHelp=Valeur de l'attribut "element" de l'objet<br /><b>Exemple de Class :</b><br /><ul><li>Facture::element = facture</li><li>OrderLine::element = commandedet</li></ul>
+ObjectTypeHelp = Valeur de l'attribut "element" de l'objet<br /><b>Exemple de Class :</b><br /><ul><li>Facture::element = facture</li><li>OrderLine::element = commandedet</li></ul>
 GroupOrUser = Utilisateur ou Groupe
-GroupOrUserHelp=<b>Attention</b> il est <b>nécessaire</b> de renseigner au moins l'un des 2 champs
+GroupOrUserHelp = <b>Attention</b> il est <b>nécessaire</b> de renseigner au moins l'un des 2 champs
 Condition = Condition
 Rights = Droits
 CodeToEval = Condition à valider (PHP)
 RightsToRemove = Droit à supprimer si la condition est valide
-RightsToRemoveHelp=Attention, certains intitulés peuvent différer avec ce qui est noté dans l'onglet "Permissions utilisateur"
+RightsToRemoveHelp = Attention, certains intitulés peuvent différer avec ce qui est noté dans l'onglet "Permissions utilisateur"
 RightsToAdd = Droit à ajouter si la condition est valide
